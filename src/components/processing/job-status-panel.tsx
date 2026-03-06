@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import type { Job, JobStatus } from "@/types";
+import type { LucideIcon } from "lucide-react";
 
 interface JobStatusPanelProps {
   jobs: Job[];
@@ -20,7 +21,7 @@ interface JobStatusPanelProps {
 
 const STATUS_CONFIG: Record<
   JobStatus,
-  { icon: React.ElementType; label: string; color: string; badgeClass: string }
+  { icon: LucideIcon; label: string; color: string; badgeClass: string }
 > = {
   queued: {
     icon: Clock,
@@ -94,6 +95,11 @@ export function JobStatusPanel({ jobs, onJobClick }: JobStatusPanelProps) {
       {activeJobs.map((job) => {
         const config = STATUS_CONFIG[job.status];
         const Icon = config.icon;
+        const iconClass = cn(
+          "size-3.5",
+          config.color,
+          job.status === "processing" && "animate-spin"
+        );
         return (
           <button
             key={job.jobId}
@@ -102,13 +108,7 @@ export function JobStatusPanel({ jobs, onJobClick }: JobStatusPanelProps) {
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Icon
-                  className={cn(
-                    "size-3.5",
-                    config.color,
-                    job.status === "processing" && "animate-spin"
-                  )}
-                />
+                <Icon className={iconClass} />
                 <span className="text-xs font-medium text-foreground truncate max-w-[140px]">
                   {job.conversationId ? `Job ${job.jobId.slice(0, 6)}` : "Chua xac dinh"}
                 </span>

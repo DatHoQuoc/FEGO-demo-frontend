@@ -26,18 +26,22 @@ export default function TrailRenderer({
   const trailPoints = useRef<THREE.Vector3[]>([])
 
   useFrame(({ scene }) => {
+    // Use a ref-style holder so TS doesn't infer `never` through the closure
     let targetPos: THREE.Vector3 | null = null
 
     scene.traverse((obj) => {
       if (obj.userData?.nodeId === targetId) {
-        targetPos = new THREE.Vector3()
-        obj.getWorldPosition(targetPos)
+        const pos = new THREE.Vector3()
+        obj.getWorldPosition(pos)
+        targetPos = pos
       }
     })
 
-    if (!targetPos || !lineRef.current) return
+    if (targetPos === null || !lineRef.current) return
 
-    trailPoints.current.push(targetPos.clone())
+    // Cast required: TS still can't narrow through traverse callback
+    const pos = targetPos as THREE.Vector3
+    trailPoints.current.push(pos.clone())
     if (trailPoints.current.length > maxPoints) {
       trailPoints.current.shift()
     }
@@ -48,9 +52,13 @@ export default function TrailRenderer({
   })
 
   return (
-    <line ref={lineRef as React.RefObject<THREE.Line>}>
-      <bufferGeometry />
-      <lineBasicMaterial color={color} transparent opacity={0.7} />
-    </line>
+    // Use primitive to avoid JSX confusing THREE.Line with SVG <line>
+    <primitive
+      object={new THREE.Line(
+        new THREE.BufferGeometry(),
+        new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.7 })
+      )}
+      ref={lineRef}
+    />
   )
 }

@@ -3,7 +3,7 @@
 import { memo, useState, useRef, useCallback } from "react"
 import { useFrame } from "@react-three/fiber"
 import { Html } from "@react-three/drei"
-import type { Mesh } from "three"
+import type { Mesh, MeshStandardMaterial  } from "three"
 import { useSceneStore } from "@/stores/sceneStore"
 import { Button } from "@/components/ui/button"
 import { Slider } from "@/components/ui/slider"
@@ -24,7 +24,7 @@ function SlicingTool() {
   // Subtle pulse animation on the plane
   useFrame(({ clock }) => {
     if (planeRef.current && !applied) {
-      planeRef.current.material.opacity =
+      (planeRef.current.material as MeshStandardMaterial).opacity =
         0.25 + Math.sin(clock.getElapsedTime() * 2) * 0.1
     }
   })
