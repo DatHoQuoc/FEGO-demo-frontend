@@ -166,6 +166,7 @@ function createSampleConversations(): Conversation[] {
 export default function HomePage() {
   // Layout
   const [layoutMode, setLayoutMode] = useState<LayoutMode>("chat");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [sidebarHovered, setSidebarHovered] = useState(false);
 
   // Conversations
@@ -216,6 +217,7 @@ export default function HomePage() {
     setLayoutMode("chat");
     setConversationState("idle");
     setSelectedIntention(null);
+    setSidebarOpen(true);
   }, []);
 
   const handleSelectConversation = useCallback((id: string) => {
@@ -224,6 +226,7 @@ export default function HomePage() {
     setLayoutMode("chat");
     setConversationState("idle");
     setSelectedIntention(null);
+    setSidebarOpen(true);
   }, []);
 
   const handleDeleteConversation = useCallback(
@@ -651,21 +654,57 @@ export default function HomePage() {
     <div className="flex h-dvh flex-col bg-background overflow-hidden">
       {/* Top bar */}
       <TopBar
-        onMenuClick={() => setSidebarHovered((prev) => !prev)}
-        onMenuMouseEnter={() => setSidebarHovered(true)}
+        onMenuClick={() => isSplit && setSidebarHovered((prev) => !prev)}
+        onMenuMouseEnter={() => isSplit && setSidebarHovered(true)}
         user={MOCK_USER}
         onLogout={handleLogout}
       />
 
-      {/* Sidebar overlay — triggered by hovering the menu icon in TopBar */}
-      {sidebarHovered && (
-        <div
-          className="absolute bottom-0 left-0 z-50 top-14"
-          onMouseLeave={() => setSidebarHovered(false)}
-        >
+      <div className="flex flex-1 overflow-hidden">
+        {/* NORMAL sidebar — only visible in chat mode (not split) */}
+        {!isSplit && sidebarOpen && (
+          <Sidebar
+            conversations={conversations}
+            currentConversationId={currentConversationId}
+            onConversationSelect={handleSelectConversation}
+            onNewChat={handleNewChat}
+            isOpen={true}
+            onToggle={() => setSidebarOpen(false)}
+            onDelete={handleDeleteConversation}
+            onRename={handleRenameConversation}
+            jobs={jobs}
+            onJobClick={(jobId) => {
+              const job = jobs.find((j) => j.jobId === jobId);
+              if (job && (job.status === "processing" || job.status === "queued")) {
+                setLayoutMode("split-processing");
+              }
+            }}
+          />
+        )}
+
+        {/* Show sidebar button — only in chat mode when sidebar is closed */}
+        {!isSplit && !sidebarOpen && (
+          <div className="flex flex-col items-center border-r border-border bg-background py-3 px-1.5 gap-2">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground transition-colors"
+              aria-label="Open sidebar"
+              title="Open sidebar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="18" height="18" x="3" y="3" rx="2"/>
+                <path d="M9 3v18"/>
+              </svg>
+            </button>
+          </div>
+        )}
+
+        {/* OVERLAY sidebar — only in split mode, triggered by hovering logo */}
+        {isSplit && sidebarHovered && (
           <div
-            className="h-full shadow-2xl"
+            className="absolute bottom-0 left-0 z-50 top-14 shadow-2xl border-r border-border"
             style={{ backgroundColor: "hsl(var(--background))" }}
+            onMouseLeave={() => setSidebarHovered(false)}
           >
             <Sidebar
               conversations={conversations}
@@ -685,21 +724,16 @@ export default function HomePage() {
               jobs={jobs}
               onJobClick={(jobId) => {
                 const job = jobs.find((j) => j.jobId === jobId);
-                if (
-                  job &&
-                  (job.status === "processing" || job.status === "queued")
-                ) {
+                if (job && (job.status === "processing" || job.status === "queued")) {
                   setLayoutMode("split-processing");
+                  setSidebarHovered(false);
                 }
               }}
             />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Main content — full width always, split internally */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Chat panel — hidden when viewer is expanded */}
+        {/* Chat panel */}
         <div
           className={`
             flex flex-col overflow-hidden transition-all duration-500 ease-in-out
