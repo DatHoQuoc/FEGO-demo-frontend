@@ -83,15 +83,29 @@ export function Hero() {
       ease: "power2.out",
     })
 
-    // CTA buttons
-    gsap.from(".hero-cta", {
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-      stagger: 0.2,
-      duration: 0.8,
-      delay: 1.2,
+    // Badge
+    gsap.from(".hero-badge", {
+      opacity: 0, scale: 0.8, y: 20,
+      duration: 0.8, delay: 1.0,
       ease: "back.out(1.4)",
+      clearProps: "all",  // ← quan trọng!
+    })
+
+    // Buttons
+    gsap.from(".hero-btn-primary, .hero-btn-secondary", {
+      opacity: 0, scale: 0.8, y: 20,
+      stagger: 0.15,
+      duration: 0.8, delay: 1.2,
+      ease: "back.out(1.4)",
+      clearProps: "all",  // ← quan trọng!
+    })
+
+    // Stats
+    gsap.from(".hero-stats", {
+      opacity: 0, y: 20,
+      duration: 0.8, delay: 1.5,
+      ease: "power2.out",
+      clearProps: "all",
     })
 
     // Scroll indicator bounce
@@ -169,7 +183,7 @@ export function Hero() {
       {/* Hero Content */}
       <div className="relative z-10 mx-auto max-w-5xl px-4 text-center">
         {/* Badge */}
-        <div className="hero-cta mb-6 inline-flex items-center gap-2 rounded-full border border-[#A8DADC] bg-white/80 px-4 py-1.5 text-sm font-medium text-[#1D3557] backdrop-blur-sm">
+        <div className="hero-badge mb-6 inline-flex items-center gap-2 rounded-full border border-[#A8DADC] bg-white/80 px-4 py-1.5 text-sm font-medium text-[#1D3557] backdrop-blur-sm">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#457B9D] opacity-75" />
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[#457B9D]" />
@@ -182,11 +196,10 @@ export function Hero() {
           {headlineWords.map((word, i) => (
             <span
               key={i}
-              className={`hero-word inline-block ${
-                word === "AI"
+              className={`hero-word inline-block ${word === "AI"
                   ? "bg-gradient-to-r from-[#457B9D] to-[#1D3557] bg-clip-text text-transparent"
                   : "text-[#1D3557]"
-              }`}
+                }`}
             >
               {word}
               {i < headlineWords.length - 1 ? "\u00A0" : ""}
@@ -206,7 +219,7 @@ export function Hero() {
               const el = document.querySelector("#demo")
               el?.scrollIntoView({ behavior: "smooth" })
             }}
-            className="hero-cta group flex items-center gap-2 rounded-full bg-[#1D3557] px-8 py-4 text-base font-semibold text-white shadow-xl shadow-[#1D3557]/25 transition-all hover:bg-[#457B9D] hover:shadow-2xl hover:shadow-[#457B9D]/30"
+            className="hero-btn-primary group flex items-center gap-2 rounded-full bg-[#1D3557] px-8 py-4 text-base font-semibold text-white shadow-xl shadow-[#1D3557]/25 transition-all hover:bg-[#457B9D] hover:shadow-2xl hover:shadow-[#457B9D]/30"
           >
             Dung thu mien phi
             <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -216,7 +229,7 @@ export function Hero() {
               const el = document.querySelector("#demo")
               el?.scrollIntoView({ behavior: "smooth" })
             }}
-            className="hero-cta flex items-center gap-2 rounded-full border-2 border-[#A8DADC] bg-white px-8 py-4 text-base font-semibold text-[#1D3557] transition-all hover:border-[#457B9D] hover:text-[#457B9D]"
+            className="hero-btn-secondary flex items-center gap-2 rounded-full border-2 border-[#A8DADC] bg-white px-8 py-4 text-base font-semibold text-[#1D3557] transition-all hover:border-[#457B9D] hover:text-[#457B9D]"
           >
             <Play className="h-5 w-5" fill="currentColor" />
             Xem demo
@@ -224,7 +237,7 @@ export function Hero() {
         </div>
 
         {/* Stats */}
-        <div className="hero-cta mt-14 flex items-center justify-center gap-8 text-sm text-[#457B9D] md:gap-12">
+        <div className="hero-stats mt-14 flex items-center justify-center gap-8 text-sm text-[#457B9D] md:gap-12">
           <div className="flex flex-col items-center">
             <span className="text-2xl font-bold text-[#1D3557]">10,000+</span>
             <span>Hoc sinh</span>

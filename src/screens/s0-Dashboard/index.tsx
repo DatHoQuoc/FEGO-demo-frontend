@@ -7,10 +7,10 @@ import StatusDot from '@/components/shared/StatusDot'
 import LogItem from '@/components/shared/LogItem'
 import { animateScreenEnter, animateStagger } from '@/lib/gsap'
 import type { ScreenId } from '@/lib/navigation'
+import gsap from 'gsap'
 
 interface Props {
   onNav: (id: ScreenId) => void
-  isActive?: boolean
 }
 
 // SVG dual-line area chart for activity
@@ -84,17 +84,20 @@ function ActivityChart() {
   )
 }
 
-export default function S0Dashboard({ onNav, isActive  }: Props) {
+export default function S0Dashboard({ onNav  }: Props) {
   const screenRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (!isActive) return
+useEffect(() => {
+  const ctx = gsap.context(() => {
     animateScreenEnter(screenRef.current)
     animateStagger(screenRef.current)
-  }, [isActive])
+  }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+  return () => ctx.revert()
+}, [])
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* Welcome Bar */}
       <div
         className="si rounded-[10px] p-4 mb-5 flex flex-col sm:flex-row sm:items-center gap-3"

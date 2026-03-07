@@ -6,6 +6,7 @@ import KpiCard from '@/components/shared/KpiCard'
 import StatusDot from '@/components/shared/StatusDot'
 import Pill from '@/components/shared/Pill'
 import { animateScreenEnter, animateStagger } from '@/lib/gsap'
+import gsap from 'gsap'
 
 const PERMISSIONS = [
   'AI Config',
@@ -17,29 +18,29 @@ const PERMISSIONS = [
 ]
 
 const PERM_MATRIX: Record<string, ('full' | 'partial' | 'none')[]> = {
-  'AI Config':       ['full', 'none',    'none'],
-  'User Accounts':   ['full', 'partial', 'full'],
-  'Content Review':  ['full', 'full',    'none'],
-  'Revenue Data':    ['full', 'none',    'full'],
-  'System Logs':     ['full', 'partial', 'none'],
-  'Feature Flags':   ['full', 'none',    'none'],
+  'AI Config': ['full', 'none', 'none'],
+  'User Accounts': ['full', 'partial', 'full'],
+  'Content Review': ['full', 'full', 'none'],
+  'Revenue Data': ['full', 'none', 'full'],
+  'System Logs': ['full', 'partial', 'none'],
+  'Feature Flags': ['full', 'none', 'none'],
 }
 
 const ACCOUNTS = [
-  { id: 'ADM-01', name: 'Trần Minh Đức',   role: 'Admin',     status: 'Active', last: '10 phút trước' },
-  { id: 'ADM-02', name: 'Lê Hoàng Anh',    role: 'Admin',     status: 'Active', last: '1h trước' },
+  { id: 'ADM-01', name: 'Trần Minh Đức', role: 'Admin', status: 'Active', last: '10 phút trước' },
+  { id: 'ADM-02', name: 'Lê Hoàng Anh', role: 'Admin', status: 'Active', last: '1h trước' },
   { id: 'MOD-01', name: 'Nguyễn Thúy Linh', role: 'Moderator', status: 'Active', last: '25 phút trước' },
-  { id: 'MOD-02', name: 'Phạm Việt Hùng',  role: 'Moderator', status: 'Away',   last: '3h trước' },
-  { id: 'MOD-03', name: 'Đỗ Thu Hà',       role: 'Moderator', status: 'Active', last: '45 phút trước' },
-  { id: 'MOD-04', name: 'Võ Quang Minh',   role: 'Moderator', status: 'Away',   last: '2h trước' },
-  { id: 'STF-01', name: 'Hoàng Bảo Châu',  role: 'Staff',     status: 'Active', last: '15 phút trước' },
-  { id: 'STF-02', name: 'Bùi Thanh Tâm',   role: 'Staff',     status: 'Locked', last: '2 ngày trước' },
+  { id: 'MOD-02', name: 'Phạm Việt Hùng', role: 'Moderator', status: 'Away', last: '3h trước' },
+  { id: 'MOD-03', name: 'Đỗ Thu Hà', role: 'Moderator', status: 'Active', last: '45 phút trước' },
+  { id: 'MOD-04', name: 'Võ Quang Minh', role: 'Moderator', status: 'Away', last: '2h trước' },
+  { id: 'STF-01', name: 'Hoàng Bảo Châu', role: 'Staff', status: 'Active', last: '15 phút trước' },
+  { id: 'STF-02', name: 'Bùi Thanh Tâm', role: 'Staff', status: 'Locked', last: '2 ngày trước' },
 ]
 
 const PENDING = [
-  { name: 'Nguyễn Thị Mai',  school: 'THPT Nguyễn Du, HCM', time: '2 ngày trước' },
-  { name: 'Trần Văn Hùng',   school: 'THPT Chu Văn An, HN',  time: '1 ngày trước' },
-  { name: 'Lê Thị Hoa',      school: 'THPT Lê Quý Đôn, ĐN',  time: '5 giờ trước' },
+  { name: 'Nguyễn Thị Mai', school: 'THPT Nguyễn Du, HCM', time: '2 ngày trước' },
+  { name: 'Trần Văn Hùng', school: 'THPT Chu Văn An, HN', time: '1 ngày trước' },
+  { name: 'Lê Thị Hoa', school: 'THPT Lê Quý Đôn, ĐN', time: '5 giờ trước' },
 ]
 
 type FilterRole = 'Tất cả' | 'Admin' | 'Moderator' | 'Staff'
@@ -54,8 +55,12 @@ export default function S2RolePermission() {
   const [lockConfirmRow, setLockConfirmRow] = useState<string | null>(null)
 
   useEffect(() => {
-    animateScreenEnter(screenRef.current)
-    animateStagger(screenRef.current)
+    const ctx = gsap.context(() => {
+      animateScreenEnter(screenRef.current)
+      animateStagger(screenRef.current)
+    }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+    return () => ctx.revert()
   }, [])
 
   const filtered = filter === 'Tất cả' ? ACCOUNTS : ACCOUNTS.filter((a) => a.role === filter)
@@ -64,7 +69,7 @@ export default function S2RolePermission() {
     s === 'Active' ? 'on' : s === 'Away' ? 'aw' : 'err'
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* 4 KPIs */}
       <div className="grid grid-cols-4 gap-3 mb-5">
         <KpiCard label="Tài khoản nội bộ" value="19" numericValue={19} delta="8 Admin/Mod/Staff" deltaType="neutral" accent="teal" />

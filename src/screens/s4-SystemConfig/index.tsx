@@ -7,38 +7,39 @@ import StatusDot from '@/components/shared/StatusDot'
 import Pill from '@/components/shared/Pill'
 import Toggle from '@/components/shared/Toggle'
 import { animateScreenEnter, animateStagger } from '@/lib/gsap'
+import gsap from 'gsap'
 
 type TabId = 'agents' | 'routing' | 'prompts' | 'flags' | 'cost'
 const TABS: { id: TabId; label: string }[] = [
-  { id: 'agents',   label: 'AI Agents' },
-  { id: 'routing',  label: 'Routing & Fallback' },
-  { id: 'prompts',  label: 'Prompt Versions' },
-  { id: 'flags',    label: 'Feature Flags' },
-  { id: 'cost',     label: 'Cost & Limits' },
+  { id: 'agents', label: 'AI Agents' },
+  { id: 'routing', label: 'Routing & Fallback' },
+  { id: 'prompts', label: 'Prompt Versions' },
+  { id: 'flags', label: 'Feature Flags' },
+  { id: 'cost', label: 'Cost & Limits' },
 ]
 
 const AGENTS = [
-  { name: 'Problem Analyzer',          model: 'sonnet-4-5', rate: 98.4, lat: '320ms', cost: '$0.0012', ver: 'v2.3', status: 'on' as const,  warn: false },
-  { name: '3D Structure Generator',    model: 'sonnet-4-5', rate: 96.5, lat: '890ms', cost: '$0.0031', ver: 'v1.8', status: 'on' as const,  warn: false },
-  { name: 'Solution Generator',        model: 'sonnet-4-5', rate: 97.1, lat: '1240ms', cost: '$0.0048', ver: 'v3.1', status: 'on' as const, warn: false },
-  { name: 'Concept Check Generator',   model: 'haiku-4-5',  rate: 95.8, lat: '210ms', cost: '$0.0004', ver: 'v1.5', status: 'on' as const,  warn: false },
-  { name: 'Solution Checker',          model: 'sonnet-4-5', rate: 93.2, lat: '1680ms', cost: '$0.0061', ver: 'v2.0', status: 'on' as const, warn: false },
-  { name: 'Error Classifier',          model: 'haiku-4-5',  rate: 88.1, lat: '340ms', cost: '$0.0005', ver: 'v1.2', status: 'aw' as const,  warn: true  },
+  { name: 'Problem Analyzer', model: 'sonnet-4-5', rate: 98.4, lat: '320ms', cost: '$0.0012', ver: 'v2.3', status: 'on' as const, warn: false },
+  { name: '3D Structure Generator', model: 'sonnet-4-5', rate: 96.5, lat: '890ms', cost: '$0.0031', ver: 'v1.8', status: 'on' as const, warn: false },
+  { name: 'Solution Generator', model: 'sonnet-4-5', rate: 97.1, lat: '1240ms', cost: '$0.0048', ver: 'v3.1', status: 'on' as const, warn: false },
+  { name: 'Concept Check Generator', model: 'haiku-4-5', rate: 95.8, lat: '210ms', cost: '$0.0004', ver: 'v1.5', status: 'on' as const, warn: false },
+  { name: 'Solution Checker', model: 'sonnet-4-5', rate: 93.2, lat: '1680ms', cost: '$0.0061', ver: 'v2.0', status: 'on' as const, warn: false },
+  { name: 'Error Classifier', model: 'haiku-4-5', rate: 88.1, lat: '340ms', cost: '$0.0005', ver: 'v1.2', status: 'aw' as const, warn: true },
 ]
 
 const CORE_FLAGS = [
-  { name: '3D Geometry Renderer',      users: 1247 },
-  { name: 'AI Solution Generator',     users: 980  },
-  { name: 'Concept Check System',      users: 856  },
+  { name: '3D Geometry Renderer', users: 1247 },
+  { name: 'AI Solution Generator', users: 980 },
+  { name: 'Concept Check System', users: 856 },
   { name: 'Student Progress Tracking', users: 1100 },
-  { name: 'Teacher Dashboard',         users: 92   },
-  { name: 'Real-time Collaboration',   users: 340  },
+  { name: 'Teacher Dashboard', users: 92 },
+  { name: 'Real-time Collaboration', users: 340 },
 ]
 
 const EXP_FLAGS = [
-  { name: 'AR Mode (Beta)',         on: false },
-  { name: 'AI Hint Generator',      on: true  },
-  { name: 'Adaptive Difficulty',    on: false },
+  { name: 'AR Mode (Beta)', on: false },
+  { name: 'AI Hint Generator', on: true },
+  { name: 'Adaptive Difficulty', on: false },
 ]
 
 const PROMPT_AGENTS = [
@@ -46,14 +47,14 @@ const PROMPT_AGENTS = [
     name: 'Solution Generator',
     versions: [
       { v: 'v3.1', status: 'current', rate: 97.1, date: '01/03/2026' },
-      { v: 'v3.0', status: 'stable',  rate: 95.3, date: '15/02/2026' },
-      { v: 'v2.9', status: 'old',     rate: 94.0, date: '01/02/2026' },
+      { v: 'v3.0', status: 'stable', rate: 95.3, date: '15/02/2026' },
+      { v: 'v2.9', status: 'old', rate: 94.0, date: '01/02/2026' },
     ],
   },
-  { name: 'Problem Analyzer',         versions: [{ v: 'v2.3', status: 'current', rate: 98.4, date: '28/02/2026' }] },
-  { name: '3D Structure Generator',   versions: [{ v: 'v1.8', status: 'current', rate: 96.5, date: '20/02/2026' }] },
-  { name: 'Concept Check Generator',  versions: [{ v: 'v1.5', status: 'current', rate: 95.8, date: '12/02/2026' }] },
-  { name: 'Solution Checker',         versions: [{ v: 'v2.0', status: 'current', rate: 93.2, date: '05/03/2026' }] },
+  { name: 'Problem Analyzer', versions: [{ v: 'v2.3', status: 'current', rate: 98.4, date: '28/02/2026' }] },
+  { name: '3D Structure Generator', versions: [{ v: 'v1.8', status: 'current', rate: 96.5, date: '20/02/2026' }] },
+  { name: 'Concept Check Generator', versions: [{ v: 'v1.5', status: 'current', rate: 95.8, date: '12/02/2026' }] },
+  { name: 'Solution Checker', versions: [{ v: 'v2.0', status: 'current', rate: 93.2, date: '05/03/2026' }] },
 ]
 
 // Tab: AI Agents
@@ -98,9 +99,9 @@ function TabAgents() {
           <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
             {[
               { label: 'Success rate', val: `${agent.rate}%`, color: agent.rate >= 95 ? '#2ec27e' : agent.rate >= 90 ? '#f4a623' : '#E63946' },
-              { label: 'Avg latency',  val: agent.lat, color: 'var(--text)' },
-              { label: 'Cost/call',    val: agent.cost, color: 'var(--text)' },
-              { label: 'Prompt ver',   val: agent.ver, color: 'var(--lt)' },
+              { label: 'Avg latency', val: agent.lat, color: 'var(--text)' },
+              { label: 'Cost/call', val: agent.cost, color: 'var(--text)' },
+              { label: 'Prompt ver', val: agent.ver, color: 'var(--lt)' },
             ].map(({ label, val, color }) => (
               <div key={label}>
                 <p className="text-[10px]" style={{ color: 'var(--text3)' }}>{label}</p>
@@ -138,9 +139,9 @@ function TabRouting() {
       <div className="si rounded-[10px] p-4" style={{ background: 'var(--p2)', border: '1px solid var(--border)' }}>
         <p className="text-[12px] font-semibold mb-3" style={{ color: 'var(--text)' }}>Routing Rules</p>
         {[
-          { label: 'Primary',   cond: '',                         action: 'claude-sonnet-4-5', color: '#2ec27e' },
-          { label: 'Fallback',  cond: 'nếu latency > 2s',         action: 'claude-haiku-4-5',  color: '#f4a623' },
-          { label: 'Emergency', cond: 'nếu API down > 5 phút',    action: 'Backup LLM + Slack notify', color: '#E63946' },
+          { label: 'Primary', cond: '', action: 'claude-sonnet-4-5', color: '#2ec27e' },
+          { label: 'Fallback', cond: 'nếu latency > 2s', action: 'claude-haiku-4-5', color: '#f4a623' },
+          { label: 'Emergency', cond: 'nếu API down > 5 phút', action: 'Backup LLM + Slack notify', color: '#E63946' },
         ].map((r, i) => (
           <div key={i} className="flex items-center gap-3 py-2.5" style={{ borderBottom: '1px solid var(--border2)' }}>
             <Pill variant={i === 0 ? 'g' : i === 1 ? 'y' : 'r'}>{r.label}</Pill>
@@ -156,8 +157,8 @@ function TabRouting() {
         <p className="text-[12px] font-semibold mb-3" style={{ color: 'var(--text)' }}>Recent Fallback Log</p>
         {[
           { time: '2 ngày trước', event: 'Fallback to haiku — latency spike 2.4s', dur: '8 phút' },
-          { time: '5 ngày trước', event: 'Emergency fallback triggered — API 503',  dur: '3 phút' },
-          { time: '1 tuần trước', event: 'Fallback to haiku — latency spike 2.1s',  dur: '4 phút' },
+          { time: '5 ngày trước', event: 'Emergency fallback triggered — API 503', dur: '3 phút' },
+          { time: '1 tuần trước', event: 'Fallback to haiku — latency spike 2.1s', dur: '4 phút' },
         ].map((l, i) => (
           <div key={i} className="flex items-center gap-3 py-2" style={{ borderBottom: '1px solid var(--border2)' }}>
             <span className="text-[10px] font-mono flex-shrink-0" style={{ color: 'var(--text3)', fontFamily: 'var(--font-mono)', width: 90 }}>{l.time}</span>
@@ -410,10 +411,10 @@ function TabCost() {
 
   const breakdown = [
     { label: 'Solution Generator', pct: 38, color: '#457B9D' },
-    { label: '3D Generator',       pct: 24, color: '#9b72cf' },
-    { label: 'Solution Checker',   pct: 19, color: '#2ec27e' },
-    { label: 'Problem Analyzer',   pct: 11, color: '#f4a623' },
-    { label: 'Others',             pct: 8,  color: '#4a6e84' },
+    { label: '3D Generator', pct: 24, color: '#9b72cf' },
+    { label: 'Solution Checker', pct: 19, color: '#2ec27e' },
+    { label: 'Problem Analyzer', pct: 11, color: '#f4a623' },
+    { label: 'Others', pct: 8, color: '#4a6e84' },
   ]
 
   return (
@@ -459,11 +460,11 @@ function TabCost() {
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between text-[11px]">
             <span style={{ color: 'var(--text2)' }}>Alert at 85%</span>
-            <Toggle checked={true} onChange={() => {}} label="" />
+            <Toggle checked={true} onChange={() => { }} label="" />
           </div>
           <div className="flex items-center justify-between text-[11px]">
             <span style={{ color: 'var(--text2)' }}>Alert at 100%</span>
-            <Toggle checked={true} onChange={() => {}} label="" />
+            <Toggle checked={true} onChange={() => { }} label="" />
           </div>
         </div>
       </div>
@@ -473,8 +474,8 @@ function TabCost() {
         <p className="text-[12px] font-semibold mb-3" style={{ color: 'var(--text)' }}>Per-user Limits</p>
         <div className="flex flex-col gap-3">
           {[
-            { tier: 'Free',    limit: '10/ngày',      editable: '10' },
-            { tier: 'Student', limit: '50/ngày',      editable: '50' },
+            { tier: 'Free', limit: '10/ngày', editable: '10' },
+            { tier: 'Student', limit: '50/ngày', editable: '50' },
             { tier: 'Teacher', limit: 'Không giới hạn', editable: null },
           ].map((row) => (
             <div key={row.tier} className="flex items-center justify-between gap-3">
@@ -496,7 +497,7 @@ function TabCost() {
                   </button>
                 </div>
               ) : (
-                <Toggle checked={true} onChange={() => {}} />
+                <Toggle checked={true} onChange={() => { }} />
               )}
             </div>
           ))}
@@ -512,8 +513,12 @@ export default function S4SystemConfig() {
   const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    animateScreenEnter(screenRef.current)
-    animateStagger(screenRef.current)
+    const ctx = gsap.context(() => {
+      animateScreenEnter(screenRef.current)
+      animateStagger(screenRef.current)
+    }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+    return () => ctx.revert()
   }, [])
 
   function switchTab(id: TabId) {
@@ -526,7 +531,7 @@ export default function S4SystemConfig() {
   }
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* Tabs */}
       <div className="si flex gap-1 p-1 rounded-[10px] w-fit" style={{ background: 'var(--p2)', border: '1px solid var(--border)' }}>
         {TABS.map((t) => (
@@ -546,11 +551,11 @@ export default function S4SystemConfig() {
       </div>
 
       <div ref={contentRef}>
-        {tab === 'agents'  && <TabAgents />}
+        {tab === 'agents' && <TabAgents />}
         {tab === 'routing' && <TabRouting />}
         {tab === 'prompts' && <TabPrompts />}
-        {tab === 'flags'   && <TabFlags />}
-        {tab === 'cost'    && <TabCost />}
+        {tab === 'flags' && <TabFlags />}
+        {tab === 'cost' && <TabCost />}
       </div>
     </div>
   )

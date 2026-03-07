@@ -6,20 +6,21 @@ import KpiCard from '@/components/shared/KpiCard'
 import StatusDot from '@/components/shared/StatusDot'
 import Pill from '@/components/shared/Pill'
 import { animateScreenEnter, animateStagger } from '@/lib/gsap'
+import gsap from 'gsap'
 
 const MODERATORS = [
-  { id: 'MOD-01', name: 'Nguyễn Thúy Linh', status: 'on',  queue: 4,  done: 22, avg: '16 phút', accept: '98%', quality: 9.4 },
-  { id: 'MOD-02', name: 'Phạm Việt Hùng',   status: 'on',  queue: 5,  done: 19, avg: '21 phút', accept: '95%', quality: 8.8 },
-  { id: 'MOD-03', name: 'Đỗ Thu Hà',         status: 'on',  queue: 3,  done: 18, avg: '14 phút', accept: '97%', quality: 9.2 },
-  { id: 'MOD-04', name: 'Võ Quang Minh',     status: 'aw',  queue: 0,  done: 11, avg: '24 phút', accept: '91%', quality: 8.1 },
-  { id: 'MOD-05', name: 'Trần Thị Lan',      status: 'on',  queue: 7,  done: 25, avg: '18 phút', accept: '96%', quality: 9.0 },
-  { id: 'MOD-06', name: 'Hoàng Văn Bình',    status: 'aw',  queue: 0,  done: 8,  avg: '22 phút', accept: '89%', quality: 7.8 },
+  { id: 'MOD-01', name: 'Nguyễn Thúy Linh', status: 'on', queue: 4, done: 22, avg: '16 phút', accept: '98%', quality: 9.4 },
+  { id: 'MOD-02', name: 'Phạm Việt Hùng', status: 'on', queue: 5, done: 19, avg: '21 phút', accept: '95%', quality: 8.8 },
+  { id: 'MOD-03', name: 'Đỗ Thu Hà', status: 'on', queue: 3, done: 18, avg: '14 phút', accept: '97%', quality: 9.2 },
+  { id: 'MOD-04', name: 'Võ Quang Minh', status: 'aw', queue: 0, done: 11, avg: '24 phút', accept: '91%', quality: 8.1 },
+  { id: 'MOD-05', name: 'Trần Thị Lan', status: 'on', queue: 7, done: 25, avg: '18 phút', accept: '96%', quality: 9.0 },
+  { id: 'MOD-06', name: 'Hoàng Văn Bình', status: 'aw', queue: 0, done: 8, avg: '22 phút', accept: '89%', quality: 7.8 },
 ]
 
 const OLDEST = [
   { title: 'Bài tập hình học không gian #T-4821', topic: 'Hình cầu', wait: '31h', status: 'Unassigned' },
-  { title: 'Câu hỏi concept check #T-4819',       topic: 'Hình trụ', wait: '28h', status: 'Unassigned' },
-  { title: 'Lời giải phức tạp #T-4815',           topic: 'Hình chóp', wait: '22h', status: 'Returned' },
+  { title: 'Câu hỏi concept check #T-4819', topic: 'Hình trụ', wait: '28h', status: 'Unassigned' },
+  { title: 'Lời giải phức tạp #T-4815', topic: 'Hình chóp', wait: '22h', status: 'Returned' },
 ]
 
 const THROUGHPUT = [12, 18, 15, 22, 19, 8, 6]
@@ -80,8 +81,12 @@ export default function S3ModeratorMgmt() {
   const [tooltipId, setTooltipId] = useState<string | null>(null)
 
   useEffect(() => {
-    animateScreenEnter(screenRef.current)
-    animateStagger(screenRef.current)
+    const ctx = gsap.context(() => {
+      animateScreenEnter(screenRef.current)
+      animateStagger(screenRef.current)
+    }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+    return () => ctx.revert()
   }, [])
 
   const filteredMods = filter === 'Tất cả'
@@ -89,7 +94,7 @@ export default function S3ModeratorMgmt() {
     : MODERATORS.filter((m) => (filter === 'Active' ? m.status === 'on' : m.status === 'aw'))
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* 4 KPIs */}
       <div className="grid grid-cols-4 gap-3 mb-5">
         <KpiCard label="Queue hiện tại" value="23" numericValue={23} delta="↑ 8 items mới" deltaType="down" accent="yellow" />

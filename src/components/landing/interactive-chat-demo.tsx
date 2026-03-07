@@ -48,58 +48,66 @@ export function InteractiveChatDemo() {
   const chatEndRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const containerRef = useGSAP(() => {
-    gsap.from(".demo-container", {
-      opacity: 0,
-      scale: 0.95,
-      y: 50,
-      duration: 1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".demo-section",
-        start: "top 80%",
-        end: "top 50%",
-        toggleActions: "play none none none",
-      },
-    })
+  gsap.from(".demo-container", {
+    opacity: 0,
+    scale: 0.95,
+    y: 50,
+    duration: 1,
+    ease: "power3.out",
+    clearProps: "opacity,scale,y", // ← fix
+    scrollTrigger: {
+      trigger: ".demo-section",
+      start: "top 80%",
+      end: "top 50%",
+      toggleActions: "play none none none",
+    },
+  })
 
-    gsap.from(".demo-title-text", {
-      opacity: 0,
-      y: 30,
-      duration: 0.8,
-      scrollTrigger: {
-        trigger: ".demo-section",
-        start: "top 85%",
-      },
-    })
+  gsap.from(".demo-title-text", {
+    opacity: 0,
+    y: 30,
+    duration: 0.8,
+    clearProps: "opacity,y", // ← fix
+    scrollTrigger: {
+      trigger: ".demo-section",
+      start: "top 85%",
+    },
+  })
 
-    gsap.from(".example-btn", {
-      opacity: 0,
-      y: 20,
-      stagger: 0.1,
-      duration: 0.6,
-      scrollTrigger: {
-        trigger: ".example-buttons",
-        start: "top 90%",
-      },
-    })
-  }, [])
+  gsap.from(".example-btn", {
+    opacity: 0,
+    y: 20,
+    stagger: 0.1,
+    duration: 0.6,
+    clearProps: "opacity,y", // ← fix
+    scrollTrigger: {
+      trigger: ".example-buttons",
+      start: "top 90%",
+    },
+  })
+}, [])
 
-  const animateNewMessage = useCallback(() => {
-    requestAnimationFrame(() => {
-      const bubbles = document.querySelectorAll(".chat-bubble")
-      const lastBubble = bubbles[bubbles.length - 1]
-      if (lastBubble) {
-        gsap.from(lastBubble, {
-          opacity: 0,
-          y: 20,
-          scale: 0.95,
+ const animateNewMessage = useCallback(() => {
+  requestAnimationFrame(() => {
+    const bubbles = document.querySelectorAll(".chat-bubble")
+    const lastBubble = bubbles[bubbles.length - 1] // chỉ lấy bubble cuối
+    if (lastBubble) {
+      gsap.fromTo(  // ← đổi sang fromTo thay vì from
+        lastBubble,
+        { opacity: 0, y: 20, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
           duration: 0.4,
           ease: "back.out(1.2)",
-        })
-      }
-      chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
-    })
-  }, [])
+          clearProps: "opacity,y,scale", // ← fix
+        }
+      )
+    }
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  })
+}, [])
 
   const handleSend = useCallback(
     (text?: string) => {

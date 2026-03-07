@@ -4,7 +4,6 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react"
 import { useGSAP } from "@/hooks/use-gsap"
 import gsap from "gsap"
-import { Draggable } from "gsap/Draggable"
 
 const testimonials = [
   {
@@ -56,11 +55,111 @@ const testimonials = [
 
 export function Testimonials() {
   const [current, setCurrent] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
   const carouselRef = useRef<HTMLDivElement>(null)
-  const autoplayRef = useRef<gsap.core.Timeline | null>(null)
-  const draggableRef = useRef<Draggable[] | null>(null)
+  const dragStartX = useRef<number>(0)
+  const isDragging = useRef(false)
+  // Track autoplay pause when user is interacting
+  const pauseAutoplay = useRef(false)
 
+  const goToSlide = useCallback((index: number) => {
+    if (!carouselRef.current) return
+    // Use parentElement width so we measure the visible viewport, not the full track
+    const cardWidth = carouselRef.current.parentElement!.offsetWidth
+    gsap.to(carouselRef.current, {
+      x: -index * cardWidth,
+      duration: 0.5,
+      ease: "power2.inOut",
+    })
+    setCurrent(index)
+  }, [])
+
+  const prev = useCallback(() => {
+    pauseAutoplay.current = true
+    setCurrent((c) => {
+      const newIndex = c === 0 ? testimonials.length - 1 : c - 1
+      if (carouselRef.current) {
+        const cardWidth = carouselRef.current.parentElement!.offsetWidth
+        gsap.to(carouselRef.current, {
+          x: -newIndex * cardWidth,
+          duration: 0.5,
+          ease: "power2.inOut",
+        })
+      }
+      return newIndex
+    })
+    // Resume autoplay after 6s of inactivity
+    setTimeout(() => { pauseAutoplay.current = false }, 6000)
+  }, [])
+
+  const next = useCallback(() => {
+    pauseAutoplay.current = true
+    setCurrent((c) => {
+      const newIndex = c === testimonials.length - 1 ? 0 : c + 1
+      if (carouselRef.current) {
+        const cardWidth = carouselRef.current.parentElement!.offsetWidth
+        gsap.to(carouselRef.current, {
+          x: -newIndex * cardWidth,
+          duration: 0.5,
+          ease: "power2.inOut",
+        })
+      }
+      return newIndex
+    })
+    setTimeout(() => { pauseAutoplay.current = false }, 6000)
+  }, [])
+
+  // Autoplay — only advances when not paused
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (pauseAutoplay.current) return
+      setCurrent((prev) => {
+        const newIndex = prev === testimonials.length - 1 ? 0 : prev + 1
+        if (carouselRef.current) {
+          const cardWidth = carouselRef.current.parentElement!.offsetWidth
+          gsap.to(carouselRef.current, {
+            x: -newIndex * cardWidth,
+            duration: 0.5,
+            ease: "power2.inOut",
+          })
+        }
+        return newIndex
+      })
+    }, 4000)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Pointer-based swipe — no Draggable, no conflict
+  const onPointerDown = (e: React.PointerEvent) => {
+    dragStartX.current = e.clientX
+    isDragging.current = true
+    pauseAutoplay.current = true
+  }
+
+  const onPointerUp = (e: React.PointerEvent) => {
+    if (!isDragging.current) return
+    isDragging.current = false
+    const diff = dragStartX.current - e.clientX
+    if (Math.abs(diff) > 50) {
+      setCurrent((c) => {
+        const newIndex =
+          diff > 0
+            ? Math.min(c + 1, testimonials.length - 1)
+            : Math.max(c - 1, 0)
+        if (carouselRef.current) {
+          const cardWidth = carouselRef.current.parentElement!.offsetWidth
+          gsap.to(carouselRef.current, {
+            x: -newIndex * cardWidth,
+            duration: 0.5,
+            ease: "power2.inOut",
+          })
+        }
+        return newIndex
+      })
+    }
+    setTimeout(() => { pauseAutoplay.current = false }, 6000)
+  }
+
+  // GSAP scroll-triggered entrance — clearProps prevents stuck opacity
   const containerRef = useGSAP(() => {
     gsap.fromTo(
       ".testimonials-title",
@@ -69,6 +168,7 @@ export function Testimonials() {
         opacity: 1,
         y: 0,
         duration: 0.8,
+        clearProps: "opacity,y",
         scrollTrigger: {
           trigger: ".testimonials-section",
           start: "top 85%",
@@ -76,7 +176,6 @@ export function Testimonials() {
       }
     )
 
-    // Animate the entire carousel container instead of individual cards
     gsap.fromTo(
       ".testimonials-carousel-container",
       { opacity: 0, y: 40 },
@@ -84,6 +183,7 @@ export function Testimonials() {
         opacity: 1,
         y: 0,
         duration: 0.8,
+        clearProps: "opacity,y",
         scrollTrigger: {
           trigger: ".testimonials-carousel-container",
           start: "top 85%",
@@ -91,87 +191,6 @@ export function Testimonials() {
       }
     )
   }, [])
-
-  const goToSlide = useCallback((index: number) => {
-    if (!carouselRef.current) return
-    const cardWidth = carouselRef.current.offsetWidth
-    gsap.to(carouselRef.current, {
-      x: -index * cardWidth,
-      duration: 0.6,
-      ease: "power2.inOut",
-    })
-    setCurrent(index)
-  }, [])
-
-  const prev = useCallback(() => {
-    const newIndex = current === 0 ? testimonials.length - 1 : current - 1
-    goToSlide(newIndex)
-  }, [current, goToSlide])
-
-  const next = useCallback(() => {
-    const newIndex = current === testimonials.length - 1 ? 0 : current + 1
-    goToSlide(newIndex)
-  }, [current, goToSlide])
-
-  // Autoplay
-  useEffect(() => {
-    if (isDragging) return
-
-    const interval = setInterval(() => {
-      setCurrent((prev) => {
-        const newIndex = prev === testimonials.length - 1 ? 0 : prev + 1
-        if (carouselRef.current) {
-          const cardWidth = carouselRef.current.offsetWidth
-          gsap.to(carouselRef.current, {
-            x: -newIndex * cardWidth,
-            duration: 0.6,
-            ease: "power2.inOut",
-          })
-        }
-        return newIndex
-      })
-    }, 4000)
-
-    return () => clearInterval(interval)
-  }, [isDragging])
-
-  // Draggable setup
-  useEffect(() => {
-    if (typeof window === "undefined" || !carouselRef.current) return
-
-    gsap.registerPlugin(Draggable)
-
-    const carousel = carouselRef.current
-    const cardWidth = carousel.offsetWidth
-
-    draggableRef.current = Draggable.create(carousel, {
-      type: "x",
-      bounds: {
-        minX: -(testimonials.length - 1) * cardWidth,
-        maxX: 0,
-      },
-      inertia: true,
-      onDragStart: () => {
-        setIsDragging(true)
-      },
-      onDragEnd: function () {
-        const x = this.endX
-        const newIndex = Math.round(-x / cardWidth)
-        const clampedIndex = Math.max(
-          0,
-          Math.min(newIndex, testimonials.length - 1)
-        )
-        goToSlide(clampedIndex)
-        setTimeout(() => setIsDragging(false), 100)
-      },
-    })
-
-    return () => {
-      if (draggableRef.current) {
-        draggableRef.current.forEach((d) => d.kill())
-      }
-    }
-  }, [goToSlide])
 
   return (
     <section
@@ -211,19 +230,26 @@ export function Testimonials() {
             <ChevronRight className="h-6 w-6" />
           </button>
 
-          {/* Carousel Track */}
+          {/* Carousel Track — pointer events replace Draggable */}
           <div
             ref={carouselRef}
-            className="testimonial-carousel flex cursor-grab active:cursor-grabbing"
-            style={{ width: `${testimonials.length * 100}%` }}
+            className="testimonial-carousel flex select-none"
+            style={{
+              width: `${testimonials.length * 100}%`,
+              touchAction: "pan-y", // allow vertical scroll, intercept horizontal
+              cursor: "grab",
+            }}
+            onPointerDown={onPointerDown}
+            onPointerUp={onPointerUp}
+            onPointerLeave={onPointerUp}
           >
             {testimonials.map((t, i) => (
               <div
                 key={i}
-                className="testimonial-card w-full shrink-0 px-4 md:px-12"
+                className="testimonial-card shrink-0 px-4 md:px-12"
                 style={{ width: `${100 / testimonials.length}%` }}
               >
-                <div className="mx-auto max-w-2xl rounded-3xl border border-[#A8DADC] bg-white p-8 shadow-xl transition-all md:p-10">
+                <div className="mx-auto max-w-2xl rounded-3xl border border-[#A8DADC] bg-white p-8 shadow-xl md:p-10">
                   <Quote className="mb-6 h-10 w-10 text-[#A8DADC]" />
                   <p className="mb-8 text-lg leading-relaxed text-[#457B9D] md:text-xl">
                     &ldquo;{t.content}&rdquo;
@@ -261,7 +287,11 @@ export function Testimonials() {
           {testimonials.map((_, i) => (
             <button
               key={i}
-              onClick={() => goToSlide(i)}
+              onClick={() => {
+                pauseAutoplay.current = true
+                goToSlide(i)
+                setTimeout(() => { pauseAutoplay.current = false }, 6000)
+              }}
               className={`h-2.5 rounded-full transition-all duration-300 ${
                 i === current
                   ? "w-8 bg-[#1D3557]"

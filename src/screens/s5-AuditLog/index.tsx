@@ -11,6 +11,7 @@ import Pill from '@/components/shared/Pill'
 import LogItem from '@/components/shared/LogItem'
 import Toggle from '@/components/shared/Toggle'
 import { animateScreenEnter, animateStagger } from '@/lib/gsap'
+import gsap from 'gsap'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -39,30 +40,30 @@ const LOG_ENTRIES: {
   status?: 'success' | 'warning' | 'error' | 'info'
   filter: FilterKey
 }[] = [
-  { type: 'lk', title: 'Token abuse phát hiện — #USR-10421',     meta: 'by: System Monitor · IP: 42.118.xx.xx',       timestamp: '14:32:07', status: 'error',   filter: 'Security'   },
-  { type: 'au', title: 'Phân quyền Admin → Moderator — MOD-06',  meta: 'by: Admin (ADM-01)',                          timestamp: '13:15:44', status: 'success',  filter: 'Phân quyền' },
-  { type: 'sy', title: 'Prompt v3.1 deployed — Solution Gen.',    meta: 'by: Admin (ADM-01) · from v3.0',             timestamp: '12:48:02', status: 'success',  filter: 'Config'     },
-  { type: 'ai', title: 'AI fallback triggered — haiku',           meta: 'latency spike 2.4s · 8 phút',                timestamp: '11:22:31', status: 'warning',  filter: 'AI'         },
-  { type: 'cr', title: 'Tài khoản MOD-06 được tạo',              meta: 'by: Admin (ADM-01) · Hoàng Văn Bình',        timestamp: '10:55:18', status: 'success',  filter: 'Phân quyền' },
-  { type: 'ed', title: 'Feature flag AR Mode OFF → ON',           meta: 'by: Admin (ADM-01)',                         timestamp: '10:30:00', status: 'info',     filter: 'Config'     },
-  { type: 'bi', title: 'Subscription upgrade — Teacher plan',     meta: 'user: TRN-0821 · +$12/mo',                  timestamp: '09:48:55', status: 'success',  filter: 'Billing'    },
-  { type: 'au', title: 'Giáo viên Nguyễn Thị Mai được duyệt',    meta: 'by: Admin (ADM-01) · THPT Nguyễn Du',       timestamp: '09:12:33', status: 'success',  filter: 'Phân quyền' },
-  { type: 'lk', title: 'Đăng nhập thất bại x5 — IP blocked',     meta: 'IP: 203.184.xx.xx · auto-blocked 24h',       timestamp: '09:00:05', status: 'error',    filter: 'Security'   },
-  { type: 'ai', title: 'Error Classifier success rate < 90%',     meta: 'rate: 88.1% · threshold: 90%',               timestamp: '07:45:22', status: 'warning',  filter: 'AI'         },
-  { type: 'sy', title: 'DB backup hoàn thành',                    meta: 'by: System · 6.2GB · 4 phút',                timestamp: '06:00:01', status: 'success',  filter: 'Config'     },
-  { type: 'cr', title: 'Bài tập #EX-4820 được publish',          meta: 'by: MOD-03 · Đỗ Thu Hà · Hình cầu',         timestamp: '05:30:44', status: 'success',  filter: 'Content'    },
-]
+    { type: 'lk', title: 'Token abuse phát hiện — #USR-10421', meta: 'by: System Monitor · IP: 42.118.xx.xx', timestamp: '14:32:07', status: 'error', filter: 'Security' },
+    { type: 'au', title: 'Phân quyền Admin → Moderator — MOD-06', meta: 'by: Admin (ADM-01)', timestamp: '13:15:44', status: 'success', filter: 'Phân quyền' },
+    { type: 'sy', title: 'Prompt v3.1 deployed — Solution Gen.', meta: 'by: Admin (ADM-01) · from v3.0', timestamp: '12:48:02', status: 'success', filter: 'Config' },
+    { type: 'ai', title: 'AI fallback triggered — haiku', meta: 'latency spike 2.4s · 8 phút', timestamp: '11:22:31', status: 'warning', filter: 'AI' },
+    { type: 'cr', title: 'Tài khoản MOD-06 được tạo', meta: 'by: Admin (ADM-01) · Hoàng Văn Bình', timestamp: '10:55:18', status: 'success', filter: 'Phân quyền' },
+    { type: 'ed', title: 'Feature flag AR Mode OFF → ON', meta: 'by: Admin (ADM-01)', timestamp: '10:30:00', status: 'info', filter: 'Config' },
+    { type: 'bi', title: 'Subscription upgrade — Teacher plan', meta: 'user: TRN-0821 · +$12/mo', timestamp: '09:48:55', status: 'success', filter: 'Billing' },
+    { type: 'au', title: 'Giáo viên Nguyễn Thị Mai được duyệt', meta: 'by: Admin (ADM-01) · THPT Nguyễn Du', timestamp: '09:12:33', status: 'success', filter: 'Phân quyền' },
+    { type: 'lk', title: 'Đăng nhập thất bại x5 — IP blocked', meta: 'IP: 203.184.xx.xx · auto-blocked 24h', timestamp: '09:00:05', status: 'error', filter: 'Security' },
+    { type: 'ai', title: 'Error Classifier success rate < 90%', meta: 'rate: 88.1% · threshold: 90%', timestamp: '07:45:22', status: 'warning', filter: 'AI' },
+    { type: 'sy', title: 'DB backup hoàn thành', meta: 'by: System · 6.2GB · 4 phút', timestamp: '06:00:01', status: 'success', filter: 'Config' },
+    { type: 'cr', title: 'Bài tập #EX-4820 được publish', meta: 'by: MOD-03 · Đỗ Thu Hà · Hình cầu', timestamp: '05:30:44', status: 'success', filter: 'Content' },
+  ]
 
 const ALERT_SECTIONS = ['Kỹ thuật', 'Chi phí', 'Vận hành']
 
 const ALERT_RULES: AlertRule[] = [
-  { id: 1,  label: 'Response Latency > 2000ms',    threshold: 'avg 5 phút > 2s',            channels: ['Slack', 'Email'],    status: 'on',  statusLabel: 'Active',     section: 'Kỹ thuật'  },
-  { id: 2,  label: 'AI Success Rate < 90%',        threshold: 'bất kỳ agent nào < 90%',     channels: ['Slack', 'Email'],    status: 'on',  statusLabel: 'Active',     section: 'Kỹ thuật'  },
-  { id: 3,  label: 'API Error Rate > 5%',          threshold: '5 phút rolling window',       channels: ['Slack'],             status: 'on',  statusLabel: 'Active',     section: 'Kỹ thuật'  },
-  { id: 4,  label: 'Token Abuse Detection',        threshold: '> 5× avg trong 2h',           channels: ['Slack', 'Email', 'SMS'], status: 'err', statusLabel: 'Active now', section: 'Kỹ thuật', active: true },
-  { id: 5,  label: 'Monthly Token Quota > 85%',   threshold: '890M / 1B tokens',            channels: ['Email'],             status: 'aw',  statusLabel: 'Triggered',  section: 'Chi phí',  active: true },
-  { id: 6,  label: 'Daily Cost > $55',             threshold: '$55/ngày budget',             channels: ['Email', 'Slack'],    status: 'on',  statusLabel: 'Active',     section: 'Chi phí'   },
-  { id: 7,  label: 'Queue Backlog > 30h',          threshold: 'bài chờ > 30h không xử lý',  channels: ['Slack'],             status: 'aw',  statusLabel: 'Watch',      section: 'Vận hành'  },
+  { id: 1, label: 'Response Latency > 2000ms', threshold: 'avg 5 phút > 2s', channels: ['Slack', 'Email'], status: 'on', statusLabel: 'Active', section: 'Kỹ thuật' },
+  { id: 2, label: 'AI Success Rate < 90%', threshold: 'bất kỳ agent nào < 90%', channels: ['Slack', 'Email'], status: 'on', statusLabel: 'Active', section: 'Kỹ thuật' },
+  { id: 3, label: 'API Error Rate > 5%', threshold: '5 phút rolling window', channels: ['Slack'], status: 'on', statusLabel: 'Active', section: 'Kỹ thuật' },
+  { id: 4, label: 'Token Abuse Detection', threshold: '> 5× avg trong 2h', channels: ['Slack', 'Email', 'SMS'], status: 'err', statusLabel: 'Active now', section: 'Kỹ thuật', active: true },
+  { id: 5, label: 'Monthly Token Quota > 85%', threshold: '890M / 1B tokens', channels: ['Email'], status: 'aw', statusLabel: 'Triggered', section: 'Chi phí', active: true },
+  { id: 6, label: 'Daily Cost > $55', threshold: '$55/ngày budget', channels: ['Email', 'Slack'], status: 'on', statusLabel: 'Active', section: 'Chi phí' },
+  { id: 7, label: 'Queue Backlog > 30h', threshold: 'bài chờ > 30h không xử lý', channels: ['Slack'], status: 'aw', statusLabel: 'Watch', section: 'Vận hành' },
 ]
 
 const ALERT_HISTORY = [
@@ -94,8 +95,12 @@ export default function S5AuditLog() {
   )
 
   useEffect(() => {
-    animateScreenEnter(screenRef.current)
-    animateStagger(screenRef.current)
+    const ctx = gsap.context(() => {
+      animateScreenEnter(screenRef.current)
+      animateStagger(screenRef.current)
+    }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+    return () => ctx.revert()
   }, [])
 
   const filteredLogs = logFilter === 'Tất cả'
@@ -108,13 +113,13 @@ export default function S5AuditLog() {
   }
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* 4 KPI cards */}
       <div className="grid grid-cols-4 gap-3 mb-5">
-        <KpiCard label="Log entries hôm nay" value="847"  numericValue={847}  delta="↑ 12% so với hôm qua" deltaType="up"      accent="teal"   />
-        <KpiCard label="Phân quyền changes" value="3"    numericValue={3}    delta="Hôm nay"               deltaType="neutral" accent="yellow" />
-        <KpiCard label="Config changes"      value="2"    numericValue={2}    delta="Hôm nay"               deltaType="neutral" accent="purple" />
-        <KpiCard label="Security events"     value="1"    numericValue={1}    delta="Critical · chưa xử lý" deltaType="down"    accent="red"    />
+        <KpiCard label="Log entries hôm nay" value="847" numericValue={847} delta="↑ 12% so với hôm qua" deltaType="up" accent="teal" />
+        <KpiCard label="Phân quyền changes" value="3" numericValue={3} delta="Hôm nay" deltaType="neutral" accent="yellow" />
+        <KpiCard label="Config changes" value="2" numericValue={2} delta="Hôm nay" deltaType="neutral" accent="purple" />
+        <KpiCard label="Security events" value="1" numericValue={1} delta="Critical · chưa xử lý" deltaType="down" accent="red" />
       </div>
 
       {/* Two-column layout */}
@@ -235,9 +240,9 @@ export default function S5AuditLog() {
                         <Pill
                           variant={
                             rule.status === 'err' ? 'r'
-                            : rule.status === 'aw' ? 'y'
-                            : rule.status === 'on' ? 'g'
-                            : 'm'
+                              : rule.status === 'aw' ? 'y'
+                                : rule.status === 'on' ? 'g'
+                                  : 'm'
                           }
                         >
                           {rule.statusLabel}
@@ -316,10 +321,10 @@ export default function S5AuditLog() {
             <p className="text-[13px] font-semibold mb-3" style={{ color: 'var(--text)' }}>Notification Channels</p>
             <div className="flex flex-col gap-2">
               {[
-                { name: 'Slack',     status: 'connected', dot: 'on' as const,  configured: true  },
-                { name: 'Email',     status: 'active',    dot: 'on' as const,  configured: true  },
-                { name: 'Dashboard', status: 'always on', dot: 'on' as const,  configured: true  },
-                { name: 'SMS',       status: 'chưa cấu hình', dot: 'off' as const, configured: false },
+                { name: 'Slack', status: 'connected', dot: 'on' as const, configured: true },
+                { name: 'Email', status: 'active', dot: 'on' as const, configured: true },
+                { name: 'Dashboard', status: 'always on', dot: 'on' as const, configured: true },
+                { name: 'SMS', status: 'chưa cấu hình', dot: 'off' as const, configured: false },
               ].map((ch) => {
                 const Icon = (CHANNEL_ICONS[ch.name] ?? Bell) as React.FC<{ size?: number; style?: React.CSSProperties }>
                 return (

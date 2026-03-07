@@ -7,6 +7,7 @@ import Pill from '@/components/shared/Pill'
 import LogItem from '@/components/shared/LogItem'
 import { animateScreenEnter, animateStagger, animateProgressBar } from '@/lib/gsap'
 import type { ScreenId } from '@/lib/navigation'
+import gsap from 'gsap'
 
 interface Props {
   onNav: (id: ScreenId) => void
@@ -61,11 +62,11 @@ function LatencyChart() {
 }
 
 const AI_TASKS = [
-  { label: 'Phân tích đề bài',          pct: 98.4, color: '#2ec27e' },
-  { label: 'Sinh lời giải',              pct: 97.1, color: '#2ec27e' },
-  { label: 'Dựng cấu trúc 3D',           pct: 96.5, color: '#457B9D' },
+  { label: 'Phân tích đề bài', pct: 98.4, color: '#2ec27e' },
+  { label: 'Sinh lời giải', pct: 97.1, color: '#2ec27e' },
+  { label: 'Dựng cấu trúc 3D', pct: 96.5, color: '#457B9D' },
   { label: 'Sinh câu hỏi Concept Check', pct: 95.8, color: '#457B9D' },
-  { label: 'Kiểm tra lời giải',          pct: 93.2, color: '#f4a623' },
+  { label: 'Kiểm tra lời giải', pct: 93.2, color: '#f4a623' },
 ]
 
 function ProgressRow({ label, pct, color }: { label: string; pct: number; color: string }) {
@@ -96,12 +97,16 @@ export default function S1SystemHealth({ onNav }: Props) {
   const screenRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    animateScreenEnter(screenRef.current)
-    animateStagger(screenRef.current)
+    const ctx = gsap.context(() => {
+      animateScreenEnter(screenRef.current)
+      animateStagger(screenRef.current)
+    }, screenRef) // screenRef làm scope → tự cleanup tất cả animations bên trong
+
+    return () => ctx.revert()
   }, [])
 
   return (
-    <div ref={screenRef} style={{ opacity: 0 }}>
+    <div ref={screenRef}>
       {/* 4 KPIs */}
       <div className="grid grid-cols-4 gap-3 mb-5">
         <KpiCard label="Uptime" value="99.97%" numericValue={99.97} delta="Excellent" deltaType="up" accent="teal" />
