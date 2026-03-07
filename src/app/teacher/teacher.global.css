@@ -3,53 +3,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
-:root {
-  --background: #FFFFFF;
-  --foreground: #1D3557;
-  --card: #FFFFFF;
-  --card-foreground: #1D3557;
-  --popover: #FFFFFF;
-  --popover-foreground: #1D3557;
-  --primary: #1D3557;
-  --primary-foreground: #FFFFFF;
-  --secondary: #A8DADC;
-  --secondary-foreground: #1D3557;
-  --muted: #F1FAEE;
-  --muted-foreground: #457B9D;
-  --accent: #457B9D;
-  --accent-foreground: #FFFFFF;
-  --destructive: #1D3557;
-  --destructive-foreground: #FFFFFF;
-  --border: #A8DADC;
-  --input: #A8DADC;
-  --ring: #457B9D;
-  --chart-1: #1D3557;
-  --chart-2: #457B9D;
-  --chart-3: #A8DADC;
-  --chart-4: #457B9D;
-  --chart-5: #F1FAEE;
-  --radius: 0.75rem;
-  --sidebar: #FFFFFF;
-  --sidebar-foreground: #1D3557;
-  --sidebar-primary: #1D3557;
-  --sidebar-primary-foreground: #FFFFFF;
-  --sidebar-accent: #A8DADC;
-  --sidebar-accent-foreground: #1D3557;
-  --sidebar-border: #A8DADC;
-  --sidebar-ring: #457B9D;
-  
-  /* Custom palette tokens */
-  --navy: #1D3557;
-  --teal: #457B9D;
-  --light-teal: #A8DADC;
-  --off-white: #F1FAEE;
-}
-
-
-
 @theme inline {
-  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
-  --font-mono: var(--font-space-grotesk), 'Space Grotesk', monospace;
+  --font-sans: var(--font-dm-sans), 'DM Sans', system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), 'DM Mono', monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -86,10 +42,21 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-navy: var(--navy);
-  --color-teal: var(--teal);
-  --color-light-teal: var(--light-teal);
-  --color-off-white: var(--off-white);
+
+  --color-navy: #1D3557;
+  --color-blue: #457B9D;
+  --color-teal: #A8DADC;
+  --color-red: #E63946;
+  --color-page-bg: #F4F8FA;
+  --color-card-bg: #F8FBFC;
+  --color-light: #F1FAEE;
+  --color-muted-text: #6C7A89;
+  --color-border-color: #B8DDE0;
+  --color-success: #10B981;
+  --color-hover-row: #F0F6F8;
+  --color-sidebar-hover: #243F5F;
+  --color-insight-bg: #EBF7F8;
+  --color-error-bg: #FFF5F5;
 }
 
 @layer base {

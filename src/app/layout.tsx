@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Space_Grotesk } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
-import './teacher-dashboard.css'
+import './globals.css'
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],

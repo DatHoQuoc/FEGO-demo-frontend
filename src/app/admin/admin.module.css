@@ -1,0 +1,56 @@
+.adminRoot {
+  --navy: #1D3557;
+  --navy-deep: #0f1e2e;
+  --navy-mid: #162840;
+  --teal: #457B9D;
+  --teal-soft: #3a6a8a;
+  --lt: #A8DADC;
+  --red: #E63946;
+  --green: #2ec27e;
+  --yellow: #f4a623;
+  --purple: #9b72cf;
+  --bg: #0b1826;
+  --p1: #111f2e;
+  --p2: #172535;
+  --p3: #1d2e40;
+  --border: rgba(168,218,220,.10);
+  --border2: rgba(168,218,220,.05);
+  --text: #dce8f0;
+  --text2: #8dafc4;
+  --text3: #4a6e84;
+  --sidebar-w: 220px;
+  --topbar-h: 54px;
+  --radius: 10px;
+  --radius-lg: 14px;
+
+  --background: #0b1826;
+  --foreground: #dce8f0;
+  --card: #172535;
+  --card-foreground: #dce8f0;
+  --popover: #1d2e40;
+  --popover-foreground: #dce8f0;
+  --primary: #457B9D;
+  --primary-foreground: #dce8f0;
+  --secondary: #1d2e40;
+  --secondary-foreground: #8dafc4;
+  --muted: #1d2e40;
+  --muted-foreground: #4a6e84;
+  --accent: #457B9D;
+  --accent-foreground: #dce8f0;
+  --destructive: #E63946;
+  --destructive-foreground: #dce8f0;
+  --input: #1d2e40;
+  --ring: #457B9D;
+
+  isolation: isolate;
+  display: block;
+}
+
+.dot-pulse-slow { animation: pulse-slow 2s ease-in-out infinite; }
+.dot-pulse-fast { animation: pulse-fast 1s ease-in-out infinite; }
+.glow-red { animation: glow-red 2s ease-in-out infinite; }
+
+.content-scroll {
+  height: calc(100vh - var(--topbar-h));
+  overflow-y: auto;
+}

@@ -1,0 +1,73 @@
+.moderatorRoot {
+  /* shadcn raw vars */
+  --background: #0b1826;
+  --foreground: #dce8f0;
+  --card: #172535;
+  --card-foreground: #dce8f0;
+  --primary: #457B9D;
+  --primary-foreground: #dce8f0;
+  --secondary: #1d2e40;
+  --secondary-foreground: #8dafc4;
+  --muted: #1d2e40;
+  --muted-foreground: #4a6e84;
+  --accent: #457B9D;
+  --accent-foreground: #dce8f0;
+  --border: rgba(168,218,220,.10);
+  --input: #1d2e40;
+  --ring: #457B9D;
+  --destructive: #E63946;
+  --destructive-foreground: #dce8f0;
+
+  /* Tailwind v4 color-* vars — these are what components actually use */
+  --color-background: #0b1826;
+  --color-foreground: #dce8f0;
+  --color-card: #172535;
+  --color-card-foreground: #dce8f0;
+  --color-primary: #457B9D;
+  --color-primary-foreground: #dce8f0;
+  --color-secondary: #1d2e40;
+  --color-secondary-foreground: #8dafc4;
+  --color-muted: #1d2e40;
+  --color-muted-foreground: #4a6e84;
+  --color-accent: #457B9D;
+  --color-accent-foreground: #dce8f0;
+  --color-border: rgba(168,218,220,.10);
+  --color-input: #1d2e40;
+  --color-ring: #457B9D;
+  --color-destructive: #E63946;
+  --color-destructive-foreground: #dce8f0;
+}
+
+@layer base {
+  .moderatorRoot * {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+  .moderatorRoot {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    overflow-x: hidden;
+  }
+  .moderatorRoot ::-webkit-scrollbar { width: 4px; height: 4px; }
+  .moderatorRoot ::-webkit-scrollbar-track { background: var(--p2); }
+  .moderatorRoot ::-webkit-scrollbar-thumb { background: var(--teal-soft); border-radius: 2px; }
+}
+
+.content-scroll {
+  height: calc(100vh - var(--topbar-h));
+  overflow-y: auto;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(46,194,126,0.6); }
+  50% { opacity: 0.7; transform: scale(1.15); box-shadow: 0 0 0 4px rgba(46,194,126,0); }
+}
+@keyframes pulse-fast {
+  0%, 100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(230,57,70,0.7); }
+  50% { opacity: 0.7; transform: scale(1.2); box-shadow: 0 0 0 5px rgba(230,57,70,0); }
+}
+@keyframes glow-red {
+  0%, 100% { box-shadow: 0 0 8px 1px rgba(230,57,70,0.25), inset 0 0 0 1px rgba(230,57,70,0.4); }
+  50% { box-shadow: 0 0 18px 4px rgba(230,57,70,0.45), inset 0 0 0 1px rgba(230,57,70,0.7); }
+}
