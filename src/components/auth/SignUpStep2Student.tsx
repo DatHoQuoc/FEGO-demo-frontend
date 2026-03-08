@@ -25,9 +25,8 @@ const studentSchema = z.object({
   password: z.string().min(8, 'Mật khẩu phải có ít nhất 8 ký tự'),
   grade: z.string().min(1, 'Vui lòng chọn lớp'),
   className: z.string().min(1, 'Vui lòng nhập tên lớp'),
-  acceptTerms: z.literal(true, {
-    errorMap: () => ({ message: 'Bạn phải đồng ý với điều khoản' }),
-  }),
+  acceptTerms: z.literal(true, 'Bạn phải đồng ý với điều khoản'),
+
 });
 
 type StudentFormData = z.infer<typeof studentSchema>;

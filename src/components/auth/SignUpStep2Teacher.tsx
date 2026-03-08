@@ -26,9 +26,8 @@ const teacherSchema = z.object({
   school: z.string().min(3, 'Tên trường phải có ít nhất 3 ký tự'),
   level: z.string().min(1, 'Vui lòng chọn cấp dạy'),
   subject: z.string().min(1, 'Vui lòng chọn môn dạy'),
-  acceptTerms: z.literal(true, {
-    errorMap: () => ({ message: 'Bạn phải đồng ý với điều khoản' }),
-  }),
+  acceptTerms: z.literal(true, 'Bạn phải đồng ý với điều khoản'),
+
 });
 
 type TeacherFormData = z.infer<typeof teacherSchema>;
