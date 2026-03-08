@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { ClipboardList, BookOpen, Users, BarChart2, LogOut, Box } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useRouter } from 'next/navigation';
 
 const navItems = [
   { href: "/student", label: "Bài tập", icon: ClipboardList },
@@ -18,7 +19,7 @@ interface SidebarProps {
 
 export function Sidebar({ activeItem }: SidebarProps) {
   const pathname = usePathname()
-  
+  const router = useRouter();
   const isActive = (href: string, label: string) => {
     if (activeItem) {
       return label === activeItem
@@ -34,7 +35,9 @@ export function Sidebar({ activeItem }: SidebarProps) {
       {/* Logo */}
       <div className="flex items-center gap-3 px-6 py-6">
         <div className="w-9 h-9 rounded-lg bg-[#A8DADC] flex items-center justify-center">
-          <Box className="w-5 h-5 text-[#1D3557]" />
+          <Box className="w-5 h-5 text-[#1D3557]" onClick={() => {
+            router.push('/navigation');
+          }}/>
         </div>
         <span className="text-[#F1FAEE] text-lg font-semibold tracking-tight">VisualEdu</span>
       </div>

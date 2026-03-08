@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
+import { useRouter } from 'next/navigation';
 
 interface QueueTopBarProps {
   activeTab: "queue" | "stats"
@@ -24,11 +25,13 @@ const notifications = [
 
 export function QueueTopBar({ activeTab }: QueueTopBarProps) {
   const [notificationOpen, setNotificationOpen] = useState(false)
-
+  const router = useRouter();
   return (
     <header className="h-14 bg-[#1D3557] flex items-center justify-between px-6 shrink-0">
       {/* Left - Logo + Dashboard Label */}
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3" onClick={() => {
+            router.push('/navigation');
+          }}>
         <div className="w-8 h-8 rounded bg-[#A8DADC] flex items-center justify-center">
           <span className="text-[#1D3557] font-bold text-sm">VE</span>
         </div>

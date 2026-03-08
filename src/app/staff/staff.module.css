@@ -1,0 +1,58 @@
+.staffRoot {
+  /* Core Brand Colors */
+  --navy-primary: #1D3557;
+  --blue-secondary: #457B9D;
+  --teal-accent: #A8DADC;
+  --red-accent: #E63946;
+
+  /* Background Colors */
+  --page-bg: #F4F8FA;
+  --card-bg: #F8FBFC;
+  --foreground-light: #F1FAEE;
+
+  /* Text & UI Colors */
+  --muted-text: #6C7A89;
+  --border-color: #B8DDE0;
+  --hover-row: #F0F6F8;
+
+  /* Status Colors */
+  --success: #10B981;
+  --warning: #F59E0B;
+
+  /* Semantic Tokens */
+  --background: #F4F8FA;
+  --foreground: #1D3557;
+  --card: #F8FBFC;
+  --card-foreground: #1D3557;
+  --popover: #F8FBFC;
+  --popover-foreground: #1D3557;
+  --primary: #1D3557;
+  --primary-foreground: #F1FAEE;
+  --secondary: #457B9D;
+  --secondary-foreground: #F1FAEE;
+  --muted: #F0F6F8;
+  --muted-foreground: #6C7A89;
+  --accent: #A8DADC;
+  --accent-foreground: #1D3557;
+  --destructive: #E63946;
+  --destructive-foreground: #F1FAEE;
+  --border: #B8DDE0;
+  --input: #B8DDE0;
+  --ring: #457B9D;
+  --chart-1: #1D3557;
+  --chart-2: #457B9D;
+  --chart-3: #A8DADC;
+  --chart-4: #10B981;
+  --chart-5: #F59E0B;
+  --radius: 10px;
+  --sidebar: #1D3557;
+  --sidebar-foreground: #F1FAEE;
+  --sidebar-primary: #A8DADC;
+  --sidebar-primary-foreground: #1D3557;
+  --sidebar-accent: #A8DADC;
+  --sidebar-accent-foreground: #1D3557;
+  --sidebar-border: #457B9D;
+  --sidebar-ring: #A8DADC;
+
+  display: contents;
+}

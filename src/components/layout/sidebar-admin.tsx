@@ -3,6 +3,7 @@
 import { LayoutDashboard, Activity, Users, UserCog, Settings, FileText } from 'lucide-react'
 import { META, SECTIONS, BADGES, type ScreenId } from '@/lib/navigation'
 import { cn } from '@/lib/utils'
+import { useRouter } from 'next/navigation';
 
 const ICONS: Record<ScreenId, React.ElementType> = {
   s0: LayoutDashboard,
@@ -19,6 +20,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ active, onNav }: SidebarProps) {
+  const router = useRouter();
   return (
     <aside
       className="fixed left-0 top-0 flex flex-col z-40 overflow-hidden"
@@ -48,6 +50,9 @@ export default function Sidebar({ active, onNav }: SidebarProps) {
       <div
         className="flex items-center gap-2.5 px-5 relative"
         style={{ height: 'var(--topbar-h)', borderBottom: '1px solid var(--border)' }}
+        onClick={() => {
+            router.push('/navigation');
+          }}
       >
         <div
           className="flex items-center justify-center rounded-[7px] flex-shrink-0"

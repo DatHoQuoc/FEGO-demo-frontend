@@ -6,6 +6,8 @@ import { UserMenu } from "@/components/user/user-menu";
 import { ThemeToggle } from "@/components/theme-toggle";
 import type { User } from "@/types";
 import { cn } from "@/lib/utils";
+import { useRouter } from 'next/navigation';
+
 
 interface TopBarProps {
   onMenuClick?: () => void;
@@ -22,6 +24,9 @@ export function TopBar({
   onLogout,
   className,
 }: TopBarProps) {
+  const router = useRouter();
+
+
   return (
     <header
       className={cn(
@@ -34,7 +39,10 @@ export function TopBar({
         {/* Logo button — hovering this triggers sidebar */}
         <button
           className="group flex items-center gap-2.5 rounded-lg px-1 py-1 transition-opacity hover:opacity-80 focus:outline-none"
-          onClick={onMenuClick}
+          onClick={() => {
+            router.push('/navigation');
+            onMenuClick?.();
+          }}
           onMouseEnter={onMenuMouseEnter}
           aria-label="Toggle menu"
         >

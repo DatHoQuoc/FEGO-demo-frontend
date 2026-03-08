@@ -20,6 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { useRouter } from 'next/navigation';
 
 const navItems = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
@@ -32,7 +33,7 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname()
   const { isCollapsed, toggleSidebar } = useSidebar()
-
+  const router = useRouter();
   const isActive = (href: string) => {
     if (href === "/teacher") return pathname === "/teacher"
     if (href === "/teacher/bao-cao") return pathname.startsWith("/teacher/bao-cao")
@@ -49,7 +50,9 @@ export function Sidebar() {
         {/* Logo */}
         <div className={`flex items-center ${isCollapsed ? "justify-center px-3" : "gap-3 px-5"} py-6`}>
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal">
-            <Box className="h-6 w-6 text-navy" />
+            <Box className="h-6 w-6 text-navy" onClick={() => {
+            router.push('/navigation');
+          }}/>
           </div>
           <span
             className={`text-xl font-semibold text-light whitespace-nowrap transition-opacity duration-200 ${

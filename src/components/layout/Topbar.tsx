@@ -2,6 +2,7 @@
 
 import { Search, RefreshCw, PlusCircle, Save, Download } from 'lucide-react'
 import { META, type ScreenId } from '@/lib/navigation'
+import { useRouter } from 'next/navigation';
 
 interface TopbarProps {
   active: ScreenId
@@ -21,7 +22,7 @@ const ACTION_ICON: Record<string, React.ElementType> = {
 export default function Topbar({ active, onAction, searchValue = '', onSearchChange }: TopbarProps) {
   const meta = META.find((m) => m.id === active)!
   const ActionIcon = (ACTION_ICON[meta.action] ?? RefreshCw) as React.FC<{ size?: number }>
-
+  const router = useRouter();
   return (
     <header
       className="fixed top-0 right-0 z-30 flex items-center"
@@ -75,7 +76,10 @@ export default function Topbar({ active, onAction, searchValue = '', onSearchCha
         </div>
 
         <button
-          onClick={onAction}
+          onClick={() => {
+            router.push('/admin');
+            onAction?.();
+          }}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-[7px] text-[12px] font-semibold transition-colors duration-150 hover:opacity-90"
           style={{
             background: 'rgba(69,123,157,0.25)',

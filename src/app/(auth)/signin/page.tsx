@@ -19,7 +19,7 @@ export default function SignInPage() {
     
     // For demo, simulate successful login and redirect to dashboard
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    router.push('/dashboard');
+    router.push('/navigation');
   };
 
   const handleGoogleSignIn = () => {
