@@ -1,0 +1,172 @@
+.authRoot {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --radius: 0.625rem;
+  display: contents;
+}
+
+.page {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: #F4F8FA;
+}
+
+.brand {
+  position: relative;
+  background: #1D3557;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 3rem;
+  overflow: hidden;
+}
+
+.brandTagline {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: #F1FAEE;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+}
+
+.brandTagline span { color: #A8DADC; }
+
+.brandDesc {
+  font-size: 0.9rem;
+  color: rgba(241,250,238,0.6);
+  line-height: 1.6;
+}
+
+.formPanel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.formBox { width: 100%; max-width: 400px; }
+
+.formTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1D3557;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.4rem;
+}
+
+.formSub { font-size: 0.875rem; color: #6C7A89; }
+.formSub a { color: #457B9D; font-weight: 500; text-decoration: none; }
+
+.label {
+  display: block;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #1D3557;
+  margin-bottom: 0.4rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid #B8DDE0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.9rem;
+  color: #1D3557;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  margin-bottom: 1rem;
+}
+
+.input:focus {
+  border-color: #457B9D;
+  box-shadow: 0 0 0 3px rgba(69,123,157,0.12);
+}
+
+.roleGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.roleCard {
+  padding: 0.75rem;
+  border: 1.5px solid #B8DDE0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.15s;
+}
+
+.roleCard:hover { border-color: #457B9D; background: #F0F6F8; }
+.roleCardActive { border-color: #1D3557; background: #EBF7F8; }
+
+.btn {
+  width: 100%;
+  padding: 0.7rem;
+  background: #1D3557;
+  color: #F1FAEE;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  margin-top: 0.25rem;
+}
+
+.btn:hover { background: #243F5F; }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+  color: #9BAFBE;
+  font-size: 0.75rem;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #B8DDE0;
+}
+
+.oauthRow { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+
+.oauthBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.6rem;
+  border: 1.5px solid #B8DDE0;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #1D3557;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.oauthBtn:hover { background: #F0F6F8; border-color: #457B9D; }
+
+@media (max-width: 768px) {
+  .page { grid-template-columns: 1fr; }
+  .brand { display: none; }
+}

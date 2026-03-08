@@ -1,0 +1,65 @@
+.studentRoot {
+  /* Primary Colors */
+  --primary-navy: #1D3557;
+  --secondary-blue: #457B9D;
+  --accent-teal: #A8DADC;
+  --red-accent: #E63946;
+
+  /* Backgrounds */
+  --page-bg: #F4F8FA;
+  --card-bg: #F8FBFC;
+  --dark-panel: #0F1F33;
+
+  /* Text */
+  --foreground-light: #F1FAEE;
+  --muted-text: #6C7A89;
+
+  /* Borders */
+  --border-color: #B8DDE0;
+  --border-light: #F0F6F8;
+
+  /* Status Colors */
+  --success-bg: #D1FAE5;
+  --success-text: #065F46;
+  --success-solid: #10B981;
+  --warning-bg: #FEF3C7;
+  --warning-text: #92400E;
+  --warning-solid: #F59E0B;
+  --error-bg: #FEE2E2;
+  --error-text: #991B1B;
+  --error-solid: #E63946;
+
+  /* Semantic Tokens */
+  --background: #F4F8FA;
+  --foreground: #1D3557;
+  --card: #F8FBFC;
+  --card-foreground: #1D3557;
+  --popover: #F8FBFC;
+  --popover-foreground: #1D3557;
+  --primary: #1D3557;
+  --primary-foreground: #F1FAEE;
+  --secondary: #457B9D;
+  --secondary-foreground: #F1FAEE;
+  --muted: #F0F6F8;
+  --muted-foreground: #6C7A89;
+  --accent: #A8DADC;
+  --accent-foreground: #1D3557;
+  --destructive: #E63946;
+  --destructive-foreground: #F1FAEE;
+  --border: #B8DDE0;
+  --input: #B8DDE0;
+  --ring: #A8DADC;
+  --radius: 10px;
+
+  /* Sidebar */
+  --sidebar: #1D3557;
+  --sidebar-foreground: #F1FAEE;
+  --sidebar-primary: #A8DADC;
+  --sidebar-primary-foreground: #1D3557;
+  --sidebar-accent: #A8DADC;
+  --sidebar-accent-foreground: #1D3557;
+  --sidebar-border: #2E5270;
+  --sidebar-ring: #A8DADC;
+
+  display: contents;
+}

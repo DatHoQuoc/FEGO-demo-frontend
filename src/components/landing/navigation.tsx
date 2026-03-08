@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Menu, X, ArrowRight, Triangle } from "lucide-react"
 import { useGSAP } from "@/hooks/use-gsap"
 import gsap from "gsap"
+import { useRouter } from 'next/navigation';
 
 const navLinks = [
   { label: "Tinh nang", href: "#features" },
@@ -15,6 +16,7 @@ const navLinks = [
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const router = useRouter();
 
   const containerRef = useGSAP(() => {
     gsap.from(".nav-link", {
@@ -84,7 +86,9 @@ export function Navigation() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 md:flex">
-          <button className="nav-cta text-sm font-medium text-[#457B9D] transition-colors hover:text-[#1D3557]">
+          <button 
+            onClick={() => router.push('/signin')}
+            className="nav-cta text-sm font-medium text-[#457B9D] transition-colors hover:text-[#1D3557]">
             Dang nhap
           </button>
           <button
@@ -124,7 +128,9 @@ export function Navigation() {
               </button>
             ))}
             <hr className="my-2 border-[#A8DADC]" />
-            <button className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#457B9D]">
+            <button 
+              onClick={() => router.push('/signin')}
+              className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#457B9D]">
               Dang nhap
             </button>
             <button
