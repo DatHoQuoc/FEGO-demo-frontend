@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { ClipboardList, BookOpen, Users, BarChart2, LogOut, Box } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const navItems = [
   { href: "/student", label: "Bài tập", icon: ClipboardList },
@@ -33,12 +34,16 @@ export function Sidebar({ activeItem }: SidebarProps) {
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-[#1D3557] flex flex-col">
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-6">
-        <div className="w-9 h-9 rounded-lg bg-[#A8DADC] flex items-center justify-center">
-          <Box className="w-5 h-5 text-[#1D3557]" onClick={() => {
-            router.push('/navigation');
-          }}/>
-        </div>
+      <div className="flex items-center gap-3 px-6 py-6"
+        onClick={() => router.push('/navigation')}
+      >
+        <Image
+          src="/images/logo.svg"
+          alt="VisualEdu Logo"
+          width={32}
+          height={32}
+          className="h-10 w-10"
+        />
         <span className="text-[#F1FAEE] text-lg font-semibold tracking-tight">VisualEdu</span>
       </div>
 
@@ -63,15 +68,15 @@ export function Sidebar({ activeItem }: SidebarProps) {
           {navItems.map((item) => {
             const Icon = item.icon
             const active = isActive(item.href, item.label)
-            
+
             return (
               <li key={item.href}>
                 <Link
                   href={item.href}
                   className={cn(
                     "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-                    active 
-                      ? "bg-[#A8DADC] text-[#1D3557]" 
+                    active
+                      ? "bg-[#A8DADC] text-[#1D3557]"
                       : "text-[#F1FAEE] hover:bg-[#2E5270]"
                   )}
                 >

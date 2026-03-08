@@ -21,6 +21,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const navItems = [
   { href: "/teacher", label: "Dashboard", icon: LayoutDashboard },
@@ -48,12 +49,16 @@ export function Sidebar() {
         }`}
       >
         {/* Logo */}
-        <div className={`flex items-center ${isCollapsed ? "justify-center px-3" : "gap-3 px-5"} py-6`}>
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-teal">
-            <Box className="h-6 w-6 text-navy" onClick={() => {
-            router.push('/navigation');
-          }}/>
-          </div>
+        <div className={`flex items-center ${isCollapsed ? "justify-center px-3" : "gap-3 px-5"} py-6`}  
+            onClick={() => router.push('/navigation')}
+        >
+          <Image
+            src="/images/logo.svg"
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="h-10 w-10"
+          />     
           <span
             className={`text-xl font-semibold text-light whitespace-nowrap transition-opacity duration-200 ${
               isCollapsed ? "opacity-0 w-0 overflow-hidden" : "opacity-100"

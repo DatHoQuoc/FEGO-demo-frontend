@@ -5,6 +5,7 @@ import { Menu, X, ArrowRight, Triangle } from "lucide-react"
 import { useGSAP } from "@/hooks/use-gsap"
 import gsap from "gsap"
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const navLinks = [
   { label: "Tinh nang", href: "#features" },
@@ -53,11 +54,10 @@ export function Navigation() {
   return (
     <nav
       ref={containerRef}
-      className={`fixed top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
+      className={`fixed top-0 z-50 w-full transition-all duration-300 ${scrolled
           ? "bg-white/80 backdrop-blur-md shadow-sm border-b border-[#A8DADC]"
           : "bg-transparent"
-      }`}
+        }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 lg:px-8">
         {/* Logo */}
@@ -65,9 +65,13 @@ export function Navigation() {
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           className="flex items-center gap-2"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1D3557]">
-            <Triangle className="h-4 w-4 text-white" fill="white" />
-          </div>
+          <Image
+            src="/images/logo.svg"        // path inside /public folder
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <span className="text-xl font-bold text-[#1D3557]">VisualEdu</span>
         </button>
 
@@ -86,7 +90,7 @@ export function Navigation() {
 
         {/* Desktop CTA */}
         <div className="hidden items-center gap-3 md:flex">
-          <button 
+          <button
             onClick={() => router.push('/signin')}
             className="nav-cta text-sm font-medium text-[#457B9D] transition-colors hover:text-[#1D3557]">
             Dang nhap
@@ -128,7 +132,7 @@ export function Navigation() {
               </button>
             ))}
             <hr className="my-2 border-[#A8DADC]" />
-            <button 
+            <button
               onClick={() => router.push('/signin')}
               className="rounded-lg px-4 py-3 text-left text-sm font-medium text-[#457B9D]">
               Dang nhap

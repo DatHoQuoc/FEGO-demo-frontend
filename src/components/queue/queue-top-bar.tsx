@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 interface QueueTopBarProps {
   activeTab: "queue" | "stats"
@@ -32,9 +33,13 @@ export function QueueTopBar({ activeTab }: QueueTopBarProps) {
       <div className="flex items-center gap-3" onClick={() => {
             router.push('/navigation');
           }}>
-        <div className="w-8 h-8 rounded bg-[#A8DADC] flex items-center justify-center">
-          <span className="text-[#1D3557] font-bold text-sm">VE</span>
-        </div>
+         <Image
+            src="/images/logo.svg"        // path inside /public folder
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
         <span className="text-white/80 text-sm">Moderator Dashboard</span>
       </div>
 

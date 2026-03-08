@@ -14,6 +14,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const navItems = [
   { href: "/staff", label: "Dashboard", icon: LayoutDashboard },
@@ -30,12 +31,17 @@ export function StaffSidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-60 bg-navy flex flex-col text-fg-light">
       {/* Logo */}
-      <div className="flex items-center gap-2 px-5 py-6">
-        <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-teal">
-          <Box className="h-5 w-5 text-navy" onClick={() => {
-            router.push('/navigation');
-          }}/>
-        </div>
+      <div
+        className="flex items-center gap-2 px-5 py-6 cursor-pointer"
+        onClick={() => router.push('/navigation')}
+      >
+          <Image
+            src="/images/logo.svg"
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="h-10 w-10"
+          />      
         <span className="text-lg font-semibold text-fg-light">VisualEdu</span>
       </div>
 

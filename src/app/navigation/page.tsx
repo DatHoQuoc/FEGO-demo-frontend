@@ -1,15 +1,16 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { 
-  Box, 
-  MessageCircle, 
-  ShieldCheck, 
-  ClipboardCheck, 
-  GraduationCap, 
-  BookOpenCheck, 
-  BarChart2 
+import {
+  Box,
+  MessageCircle,
+  ShieldCheck,
+  ClipboardCheck,
+  GraduationCap,
+  BookOpenCheck,
+  BarChart2
 } from "lucide-react"
+import Image from 'next/image';
 
 const dashboards = [
   {
@@ -98,34 +99,36 @@ export default function NavigationHub() {
   return (
     <div className="min-h-screen bg-page-bg">
       {/* Top Bar */}
-      <header 
+      <header
         className="flex items-center justify-between px-10 py-5"
         style={{ backgroundColor: "#1D3557" }}
       >
-        <div className="flex items-center gap-2">
-          <Box 
-            className="h-5 w-5" 
-            style={{ color: "#F1FAEE" }} 
-            onClick={() => router.push('/')}
-            />
-          <span 
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push('/')}>
+          <Image
+            src="/images/logo.svg"
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8"
+          />
+          <span
             className="font-semibold text-lg"
             style={{ color: "#F1FAEE" }}
           >
             VisualEdu
           </span>
         </div>
-        <span 
+        <span
           className="font-mono text-sm"
           style={{ color: "#A8DADC" }}
         >
           Design Prototype Navigator
         </span>
-        <span 
+        <span
           className="font-mono text-xs px-3 py-1 rounded-full border"
-          style={{ 
-            borderColor: "#A8DADC", 
-            color: "#A8DADC" 
+          style={{
+            borderColor: "#A8DADC",
+            color: "#A8DADC"
           }}
         >
           v1.0
@@ -134,13 +137,13 @@ export default function NavigationHub() {
 
       {/* Hero Section */}
       <section className="text-center pt-16 pb-10">
-        <h1 
+        <h1
           className="text-3xl font-bold"
           style={{ color: "#1D3557" }}
         >
           Chọn Dashboard
         </h1>
-        <p 
+        <p
           className="text-base mt-2"
           style={{ color: "#6C7A89" }}
         >
@@ -158,7 +161,7 @@ export default function NavigationHub() {
                 key={dashboard.id}
                 onClick={() => router.push(dashboard.route)}
                 className="group text-center p-8 rounded-[10px] border cursor-pointer transition-all duration-200 ease-out hover:shadow-[0_4px_16px_rgba(29,53,87,0.12)] active:scale-[0.98]"
-                style={{ 
+                style={{
                   backgroundColor: "#F8FBFC",
                   borderColor: "#B8DDE0",
                 }}
@@ -170,18 +173,18 @@ export default function NavigationHub() {
                 }}
               >
                 {/* Icon Container */}
-                <div 
+                <div
                   className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
                   style={{ backgroundColor: dashboard.iconBg }}
                 >
-                  <Icon 
-                    className="w-7 h-7" 
+                  <Icon
+                    className="w-7 h-7"
                     style={{ color: dashboard.iconColor }}
                   />
                 </div>
 
                 {/* Role Label */}
-                <p 
+                <p
                   className="font-mono text-xs uppercase mt-4"
                   style={{ color: "#6C7A89" }}
                 >
@@ -189,7 +192,7 @@ export default function NavigationHub() {
                 </p>
 
                 {/* Title */}
-                <h2 
+                <h2
                   className="text-lg font-semibold mt-1"
                   style={{ color: "#1D3557" }}
                 >
@@ -197,7 +200,7 @@ export default function NavigationHub() {
                 </h2>
 
                 {/* Description */}
-                <p 
+                <p
                   className="text-sm mt-2 leading-relaxed"
                   style={{ color: "#6C7A89" }}
                 >
@@ -205,9 +208,9 @@ export default function NavigationHub() {
                 </p>
 
                 {/* Badge */}
-                <span 
+                <span
                   className="inline-block text-xs px-3 py-1 rounded-full mt-3"
-                  style={{ 
+                  style={{
                     backgroundColor: dashboard.badgeBg,
                     color: dashboard.badgeText,
                   }}
@@ -216,7 +219,7 @@ export default function NavigationHub() {
                 </span>
 
                 {/* Open Link */}
-                <p 
+                <p
                   className="text-sm font-medium mt-4"
                   style={{ color: "#457B9D" }}
                 >
@@ -226,12 +229,12 @@ export default function NavigationHub() {
             )
           })}
         </div>
-        
+
       </main>
 
       {/* Footer */}
       <footer className="text-center pb-8">
-        <p 
+        <p
           className="font-mono text-xs"
           style={{ color: "#6C7A89" }}
         >

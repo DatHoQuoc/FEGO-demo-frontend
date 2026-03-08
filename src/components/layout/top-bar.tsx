@@ -7,6 +7,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import type { User } from "@/types";
 import { cn } from "@/lib/utils";
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 
 interface TopBarProps {
@@ -46,11 +47,13 @@ export function TopBar({
           onMouseEnter={onMenuMouseEnter}
           aria-label="Toggle menu"
         >
-          <div className="relative flex size-8 items-center justify-center rounded-lg bg-primary shadow-sm transition-transform duration-200 group-hover:scale-105">
-            <Triangle className="size-[14px] fill-primary-foreground text-primary-foreground" />
-            {/* Subtle glow on hover */}
-            <span className="absolute inset-0 rounded-lg opacity-0 shadow-[0_0_12px_2px] shadow-primary transition-opacity duration-200 group-hover:opacity-40" />
-          </div>
+           <Image
+            src="/images/logo.svg"        // path inside /public folder
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
           <span className="text-[15px] font-semibold tracking-tight text-foreground">
             VisualEdu
           </span>

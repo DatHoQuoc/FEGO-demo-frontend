@@ -4,6 +4,7 @@ import { LayoutDashboard, Activity, Users, UserCog, Settings, FileText } from 'l
 import { META, SECTIONS, BADGES, type ScreenId } from '@/lib/navigation'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 const ICONS: Record<ScreenId, React.ElementType> = {
   s0: LayoutDashboard,
@@ -54,7 +55,7 @@ export default function Sidebar({ active, onNav }: SidebarProps) {
             router.push('/navigation');
           }}
       >
-        <div
+        {/* <div
           className="flex items-center justify-center rounded-[7px] flex-shrink-0"
           style={{ width: 30, height: 30, background: 'rgba(69,123,157,0.2)', border: '1px solid rgba(69,123,157,0.35)' }}
         >
@@ -62,7 +63,14 @@ export default function Sidebar({ active, onNav }: SidebarProps) {
             <polygon points="8,1 15,14 1,14" fill="none" stroke="#A8DADC" strokeWidth="1.5" strokeLinejoin="round" />
             <polygon points="8,5 12,12 4,12" fill="rgba(168,218,220,0.2)" />
           </svg>
-        </div>
+        </div> */}
+         <Image
+            src="/images/logo.svg"        // path inside /public folder
+            alt="VisualEdu Logo"
+            width={32}
+            height={32}
+            className="rounded-lg"
+          />
         <div>
           <p className="text-[13px] font-bold leading-none" style={{ color: 'var(--text)', fontFamily: 'var(--font-sans)' }}>
             VisualEdu
